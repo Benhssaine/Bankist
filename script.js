@@ -59,11 +59,11 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = (function (movemenets) {
+const displayMovements = (function (movement) {
   //removes existing html in the container movements
   containerMovements.innerHTML = '';
   //loops the data table and creates new html which is then passed to the containermovement after begin
-  movemenets.forEach(function (mov, index) {
+  movement.forEach(function (mov, index) {
     const movementType = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
     <div class="movements__row">
@@ -78,6 +78,19 @@ const displayMovements = (function (movemenets) {
   });
 })(account1.movements);
 
+const createUsernames = function (accs) {
+  accs.forEach(account => {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(str => str[0])
+      .join('');
+  });
+};
+
+createUsernames(accounts);
+console.log(accounts);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -90,4 +103,17 @@ const currencies = new Map([
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
+const euroUSD = 1.1;
+
+const movementsUsd = movements.map(movement => (movement *= euroUSD));
+
+//console.log(movementsUsd, movements);
+
+const movementsLog = movements.map((mov, index) => {
+  return `Movement ${index + 1} : You ${
+    mov > 0 ? 'deposited' : 'withdrew'
+  } ${Math.abs(mov)}`;
+});
+
+//console.log(movementsLog);
 /////////////////////////////////////////////////
