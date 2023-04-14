@@ -60,11 +60,16 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 const displayMovements = (function (movemenets) {
+  //removes existing html in the container movements
+  containerMovements.innerHTML = '';
+  //loops the data table and creates new html which is then passed to the containermovement after begin
   movemenets.forEach(function (mov, index) {
     const movementType = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
     <div class="movements__row">
-      <div class="movements__type movements__type--${movementType}">${index} ${movementType}</div>
+      <div class="movements__type movements__type--${movementType}">${
+      index + 1
+    } ${movementType}</div>
       <div class="movements__value">${mov}</div>
     </div>
   `;
