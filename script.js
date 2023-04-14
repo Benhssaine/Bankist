@@ -73,6 +73,7 @@ const displayMovements = (function (movemenets) {
       <div class="movements__value">${mov}</div>
     </div>
   `;
+    //this method takes the placement in which the html will be placed and the html as a string
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 })(account1.movements);
