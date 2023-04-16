@@ -69,11 +69,14 @@ const createUsernames = (function (accs) {
   });
 })(accounts);
 
-const displayMovements = function (movement) {
+const displayMovements = function (movement, sort = false) {
   //removes existing html in the container movements
   containerMovements.innerHTML = '';
   //loops the data table and creates new html which is then passed to the containermovement after begin
-  movement.forEach(function (mov, index) {
+  //we used slice to make a copy of the array
+  const movs = sort ? movement.slice().sort((a, b) => a - b) : movement;
+
+  movs.forEach(function (mov, index) {
     const movementType = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
     <div class="movements__row">
@@ -184,6 +187,16 @@ btnLoan.addEventListener('click', event => {
   }
 });
 
+//state variable
+let sorted = false;
+btnSort.addEventListener('click', event => {
+  event.preventDefault();
+  console.log(sorted);
+  displayMovements(callingAccount.movements, !sorted);
+  //flipping variable state
+  sorted = !sorted;
+});
+
 btnClose.addEventListener('click', event => {
   event.preventDefault();
   const closeUsername = accounts.find(
@@ -216,6 +229,17 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
+/* const allAccountsMovements = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, value) => acc + value, 0);
+console.log(allAccountsMovements); // returns the value of all movements of all accounts the sum
+
+const allAccountsMovements1 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, value) => acc + value, 0);
+console.log(allAccountsMovements1);
+ */
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 const euroUSD = 1.1;
@@ -269,7 +293,7 @@ console.log(accounts.find(acc => acc.owner === 'Jessica Davis')); // ==> returns
 
  */
 // this tests if there was any deposit into the account => true
-console.log(movements.some(val => val > 0));
+/* console.log(movements.some(val => val > 0));
 // this tests if there was any deposit above 5k in the account => false
 console.log(movements.some(val => val > 5000));
 
@@ -279,7 +303,23 @@ const deposit = mov => mov > 0;
 
 console.log(movements.filter(deposit)); // ==> Array(5) [ 200, 450, 3000, 70, 1300 ]
 console.log(movements.some(deposit)); // ==> true
-console.log(movements.every(deposit)); // ==> false
+console.log(movements.every(deposit)); // ==> false */
 
 //console.log(movementsLog);
 /////////////////////////////////////////////////
+
+const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+//console.log(arr.flat()); // ==> Array(8) [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+
+const arrDeep = [[1, 2, 3, [10, 5, 11, [-1, 2]]], [4, 5, 6], 7, 8];
+//console.log(arrDeep.flat(3));
+
+const owners = ['Jonas', 'Soufiane', 'Saad', 'Aya'];
+console.log(owners.sort());
+
+//console.log(movements.sort());
+
+movements.sort((a, b) => (a > b ? 1 : -1));
+movements.sort((a, b) => a - b);
+
+console.log(movements);
